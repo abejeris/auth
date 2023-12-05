@@ -57,11 +57,17 @@ app.post('/login', async (req, res) => {
 	}
 });
 
+app.post('/logout', (req, res) => {
+	// req.session.user_id = null; can be used to delete info about user or destroy all saved info in the session
+	req.session.destroy();
+	res.redirect('/login');
+});
+
 app.get('/secret', (req, res) => {
 	if (!req.session.user_id) {
-		res.redirect('/login');
+		return res.redirect('/login');
 	}
-	res.send('this is a secret! you cannot see it unless you are logged in');
+	res.render('secret');
 });
 app.listen(port, () => {
 	console.log(`app running on port ${port}`);
